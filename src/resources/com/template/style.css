@@ -1,0 +1,160 @@
+/* ==========================================================================
+   1. AMBIENTE GLOBAL & TELA PRINCIPAL (.root)
+   ========================================================================== */
+.root {
+    -fx-background-color: #121614; /* Grafite fosco ultra-escuro */
+    -fx-font-family: "Segoe UI", -apple-system, Roboto, sans-serif;
+}
+
+/* Textos dos campos (Labels) */
+.label {
+    -fx-text-fill: #9caaa0; /* Cinza esverdeado de baixa fadiga visual */
+    -fx-font-size: 11pt;
+    -fx-font-weight: 600;
+}
+
+/* ==========================================================================
+   2. CAMPOS DE ENTRADA (TextFields Profissionais)
+   ========================================================================== */
+.text-field {
+    -fx-background-color: #1a201c;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 4px;
+    -fx-border-color: #2a352f;
+    -fx-border-radius: 4px;
+    -fx-border-width: 1px;
+    -fx-padding: 6px 12px;
+    -fx-font-size: 11pt;
+}
+
+/* Mudança sutil e elegante ao selecionar o campo */
+.text-field:focused {
+    -fx-background-color: #1d2621;
+    -fx-border-color: #00b4d8; /* Azul cyan tecnológico para destacar o foco */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 180, 216, 0.2), 6, 0, 0, 0);
+}
+
+/* ==========================================================================
+   3. BOTÕES DO CRUD (Estilo Premium Flat)
+   ========================================================================== */
+.button {
+    -fx-font-size: 11pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 22px;
+    -fx-cursor: hand;
+}
+
+/* #btnSalvar - Verde Esmeralda */
+#btnSalvar {
+    -fx-background-color: #10b981;
+}
+#btnSalvar:hover { -fx-background-color: #059669; }
+#btnSalvar:pressed { -fx-background-color: #065f46; }
+
+/* #btnAlterar - Azul Corporativo */
+#btnAlterar {
+    -fx-background-color: #3b82f6;
+}
+#btnAlterar:hover { -fx-background-color: #2563eb; }
+#btnAlterar:pressed { -fx-background-color: #1d4ed8; }
+
+/* #btnExcluir - Vermelho Crimson */
+#btnExcluir {
+    -fx-background-color: #ef4444;
+}
+#btnExcluir:hover { -fx-background-color: #dc2626; }
+#btnExcluir:pressed { -fx-background-color: #991b1b; }
+
+/* #btnLimpar - Grafite Neutro */
+#btnLimpar {
+    -fx-background-color: #374151;
+    -fx-text-fill: #d1d5db;
+}
+#btnLimpar:hover { -fx-background-color: #4b5563; }
+#btnLimpar:pressed { -fx-background-color: #1f2937; }
+
+
+/* ==========================================================================
+   4. A TABELA (#tblDinossauro)
+   ========================================================================== */
+#tblDinossauro {
+    -fx-background-color: transparent;
+    -fx-border-color: #222b26;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+/* Cabeçalho superior da tabela */
+#tblDinossauro .column-header-background {
+    -fx-background-color: #1a201c;
+    -fx-padding: 0 0 1px 0;
+}
+
+#tblDinossauro .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 38px; /* Altura ideal de leitura */
+    -fx-border-color: #121614;
+    -fx-border-width: 0 1px 1px 0;
+}
+
+#tblDinossauro .column-header .label {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+}
+
+/* Linhas da Tabela (Zebradas com tons suaves) */
+#tblDinossauro .table-row-cell {
+    -fx-background-color: #171e1a;
+    -fx-text-background-color: #e2e8f0;
+    -fx-cell-size: 32px;
+    -fx-border-color: #121614;
+    -fx-border-width: 0 0 1px 0;
+}
+#tblDinossauro .table-row-cell:odd {
+    -fx-background-color: #141a17; /* Alternância quase imperceptível, muito elegante */
+}
+
+/* Estado de Seleção da Linha */
+#tblDinossauro .table-row-cell:selected {
+    -fx-background-color: #1e3a2f; /* Fundo verde escuro cirúrgico */
+    -fx-text-background-color: #10b981; /* Texto acende em verde esmeralda */
+}
+#tblDinossauro .table-row-cell:selected .label {
+    -fx-text-fill: #10b981;
+}
+
+/* Placeholder (Texto quando a tabela está vazia) */
+#tblDinossauro .placeholder .label {
+    -fx-text-fill: #4b5563;
+    -fx-font-style: italic;
+    -fx-font-size: 11pt;
+}
+
+
+/* ==========================================================================
+   5. CUSTOMIZAÇÃO EXCLUSIVA DE COLUNAS (Alinhamento de Dados)
+   ========================================================================== */
+
+/* Colunas de ID e Datas/Anos: Alinhamento Centralizado para organização visual */
+#colId,
+#colMyaInicio,
+#colMyaFim,
+#colAnoDescoberta {
+    -fx-alignment: CENTER;
+}
+
+/* Colunas textuais longas: Alinhamento à esquerda com leve margem (padrão JavaFX) */
+#colEspecie,
+#colSignificadoNome,
+#colOrdem,
+#colEra,
+#colHabitat,
+#colDieta,
+#colTipo,
+#colLocomocao {
+    -fx-alignment: CENTER-LEFT;
+}
