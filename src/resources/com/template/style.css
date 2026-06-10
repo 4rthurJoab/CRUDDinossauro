@@ -146,7 +146,7 @@
 #colAnoDescoberta {
     -fx-alignment: CENTER;
 }
-
+//
 /* Colunas textuais longas: Alinhamento à esquerda com leve margem (padrão JavaFX) */
 #colEspecie,
 #colSignificadoNome,

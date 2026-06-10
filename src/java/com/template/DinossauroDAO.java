@@ -17,7 +17,7 @@ public class DinossauroDAO {
         try (Connection c = new Conexao().conectaBD();
              PreparedStatement ps = c.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
+//
             while (rs.next()) {
                 DinossauroDTO dino = new DinossauroDTO();
                 dino.setId(rs.getInt("id"));

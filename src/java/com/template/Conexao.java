@@ -9,7 +9,7 @@ public class Conexao {
     private static final String conexao = "jdbc:postgresql://localhost:5432/BancoDino";
     private static final String usuario = "postgres";
     private static final String senha = "postgres";
-
+//
     public Connection conectaBD() {
         try {
             return DriverManager.getConnection(conexao, usuario, senha);
