@@ -158,3 +158,25 @@
 #colLocomocao {
     -fx-alignment: CENTER-LEFT;
 }
+
+/* (Mantenha o conteúdo anterior do seu style.css e certifique-se de ter as definições abaixo) */
+
+/* Estilo para dar Opacidade Elegante aos botões quando desabilitados pelo sistema (UX Contextual) */
+.button:disabled {
+    -fx-opacity: 0.35;
+    -fx-cursor: inherit;
+}
+
+/* Customização dos textos internos de dicas (Prompt Text Color) */
+.text-field {
+    -fx-prompt-text-fill: #4b5563; /* Cinza escuro discreto */
+}
+
+/* Modificadores extras de mensagem via código */
+.msg-sucesso {
+    -fx-text-fill: #10b981;
+}
+
+.msg-erro {
+    -fx-text-fill: #ef4444;
+}

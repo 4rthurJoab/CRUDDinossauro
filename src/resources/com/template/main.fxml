@@ -10,42 +10,45 @@
 <AnchorPane prefHeight="720.0" prefWidth="1050.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
     <children>
         <Label layoutX="30.0" layoutY="25.0" text="Espécie" />
-        <TextField fx:id="txtEspecie" layoutX="180.0" layoutY="20.0" prefWidth="250.0" />
+        <TextField fx:id="txtEspecie" layoutX="180.0" layoutY="20.0" prefWidth="250.0" promptText="Ex: Tyrannosaurus rex" />
 
         <Label layoutX="30.0" layoutY="60.0" text="Significado do nome" />
-        <TextField fx:id="txtSignificadoNome" layoutX="180.0" layoutY="55.0" prefWidth="250.0" />
+        <TextField fx:id="txtSignificadoNome" layoutX="180.0" layoutY="55.0" prefWidth="250.0" promptText="Ex: Rei dos lagartos tiranos" />
 
         <Label layoutX="30.0" layoutY="95.0" text="Ordem" />
-        <TextField fx:id="txtOrdem" layoutX="180.0" layoutY="90.0" prefWidth="250.0" />
+        <TextField fx:id="txtOrdem" layoutX="180.0" layoutY="90.0" prefWidth="250.0" promptText="Ex: Saurischia" />
 
         <Label layoutX="30.0" layoutY="130.0" text="Era" />
-        <TextField fx:id="txtEra" layoutX="180.0" layoutY="125.0" prefWidth="250.0" />
+        <TextField fx:id="txtEra" layoutX="180.0" layoutY="125.0" prefWidth="250.0" promptText="Ex: Mesozoica / Cretáceo" />
 
         <Label layoutX="30.0" layoutY="165.0" text="Mya Inicio" />
-        <TextField fx:id="txtMyaInicio" layoutX="180.0" layoutY="160.0" prefWidth="250.0" />
+        <TextField fx:id="txtMyaInicio" layoutX="180.0" layoutY="160.0" prefWidth="250.0" promptText="Início em milhões de anos (Ex: 68.0)" />
 
         <Label layoutX="30.0" layoutY="200.0" text="Mya Fim" />
-        <TextField fx:id="txtMyaFim" layoutX="180.0" layoutY="195.0" prefWidth="250.0" />
+        <TextField fx:id="txtMyaFim" layoutX="180.0" layoutY="195.0" prefWidth="250.0" promptText="Fim em milhões de anos (Ex: 66.0)" />
 
         <Label layoutX="30.0" layoutY="235.0" text="Habitat" />
-        <TextField fx:id="txtHabitat" layoutX="180.0" layoutY="230.0" prefWidth="250.0" />
+        <TextField fx:id="txtHabitat" layoutX="180.0" layoutY="230.0" prefWidth="250.0" promptText="Ex: América do Norte" />
 
         <Label layoutX="30.0" layoutY="270.0" text="Dieta" />
-        <TextField fx:id="txtDieta" layoutX="180.0" layoutY="265.0" prefWidth="250.0" />
+        <TextField fx:id="txtDieta" layoutX="180.0" layoutY="265.0" prefWidth="250.0" promptText="Ex: Carnívoro" />
 
         <Label layoutX="30.0" layoutY="305.0" text="Tipo" />
-        <TextField fx:id="txtTipo" layoutX="180.0" layoutY="300.0" prefWidth="250.0" />
+        <TextField fx:id="txtTipo" layoutX="180.0" layoutY="300.0" prefWidth="250.0" promptText="Ex: Terópode" />
 
         <Label layoutX="30.0" layoutY="340.0" text="Locomoção" />
-        <TextField fx:id="txtLocomocao" layoutX="180.0" layoutY="335.0" prefWidth="250.0" />
+        <TextField fx:id="txtLocomocao" layoutX="180.0" layoutY="335.0" prefWidth="250.0" promptText="Ex: Bípede" />
 
         <Label layoutX="30.0" layoutY="375.0" text="Ano de Descoberta" />
-        <TextField fx:id="txtAnoDescoberta" layoutX="180.0" layoutY="370.0" prefWidth="250.0" />
+        <TextField fx:id="txtAnoDescoberta" layoutX="180.0" layoutY="370.0" prefWidth="250.0" promptText="Ex: 1902" />
 
         <Button fx:id="btnSalvar" layoutX="500.0" layoutY="65.0" mnemonicParsing="false" onAction="#btnSalvarAction" prefHeight="40.0" prefWidth="120.0" text="Salvar" />
         <Button fx:id="btnAlterar" layoutX="500.0" layoutY="135.0" mnemonicParsing="false" onAction="#btnAlterarAction" prefHeight="40.0" prefWidth="120.0" text="Alterar" />
         <Button fx:id="btnExcluir" layoutX="500.0" layoutY="205.0" mnemonicParsing="false" onAction="#btnExcluirAction" prefHeight="40.0" prefWidth="120.0" text="Excluir" />
         <Button fx:id="btnLimpar" layoutX="500.0" layoutY="275.0" mnemonicParsing="false" onAction="#btnLimparAction" prefHeight="40.0" prefWidth="120.0" text="Limpar" />
+
+        <Label fx:id="lblMensagem" layoutX="500.0" layoutY="340.0" prefHeight="50.0" prefWidth="500.0" wrapText="true" />
+        <Label fx:id="lblContador" layoutX="25.0" layoutY="405.0" text="Total de espécies catalogadas: 0" style="-fx-font-style: italic; -fx-text-fill: #00b4d8;" />
 
         <TableView fx:id="tblDinossauro" layoutX="25.0" layoutY="430.0" onMouseClicked="#carregarCampos" prefHeight="265.0" prefWidth="1000.0">
             <columns>
@@ -65,4 +68,3 @@
         </TableView>
     </children>
 </AnchorPane>
-//
