@@ -13,6 +13,15 @@
     -fx-font-weight: 600;
 }
 
+/* Modificadores extras de mensagem via código */
+.msg-sucesso {
+    -fx-text-fill: #10b981;
+}
+
+.msg-erro {
+    -fx-text-fill: #ef4444;
+}
+
 /* ==========================================================================
    2. CAMPOS DE ENTRADA (TextFields Profissionais)
    ========================================================================== */
@@ -25,6 +34,7 @@
     -fx-border-width: 1px;
     -fx-padding: 6px 12px;
     -fx-font-size: 11pt;
+    -fx-prompt-text-fill: #4b5563; /* Cinza escuro discreto para Placeholders */
 }
 
 /* Mudança sutil e elegante ao selecionar o campo */
@@ -35,7 +45,58 @@
 }
 
 /* ==========================================================================
-   3. BOTÕES DO CRUD (Estilo Premium Flat)
+   3. CAIXAS DE SELEÇÃO (ComboBoxes Integradas ao Tema Dark)
+   ========================================================================== */
+.combo-box {
+    -fx-background-color: #1a201c;
+    -fx-background-radius: 4px;
+    -fx-border-color: #2a352f;
+    -fx-border-radius: 4px;
+    -fx-border-width: 1px;
+    -fx-font-size: 11pt;
+}
+
+.combo-box:focused {
+    -fx-background-color: #1d2621;
+    -fx-border-color: #00b4d8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 180, 216, 0.2), 6, 0, 0, 0);
+}
+
+/* Texto dentro do ComboBox fechado */
+.combo-box .list-cell {
+    -fx-text-fill: #ffffff;
+    -fx-padding: 4px 6px;
+}
+
+/* Customização do menu suspenso (Popup da lista) */
+.combo-box-popup .list-view {
+    -fx-background-color: #1a201c;
+    -fx-border-color: #2a352f;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 4);
+}
+
+/* Itens internos da lista do ComboBox */
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #1a201c;
+    -fx-text-fill: #e2e8f0;
+    -fx-padding: 8px 12px;
+}
+
+/* Hover nos itens do ComboBox */
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #2a352f;
+    -fx-text-fill: #ffffff;
+}
+
+/* Item selecionado dentro do menu do ComboBox */
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #1e3a2f;
+    -fx-text-fill: #10b981;
+}
+
+/* ==========================================================================
+   4. BOTÕES DO CRUD (Estilo Premium Flat)
    ========================================================================== */
 .button {
     -fx-font-size: 11pt;
@@ -44,6 +105,12 @@
     -fx-background-radius: 4px;
     -fx-padding: 8px 22px;
     -fx-cursor: hand;
+}
+
+/* Estilo para dar Opacidade Elegante aos botões quando desabilitados (UX Contextual) */
+.button:disabled {
+    -fx-opacity: 0.35;
+    -fx-cursor: inherit;
 }
 
 /* #btnSalvar - Verde Esmeralda */
@@ -77,7 +144,7 @@
 
 
 /* ==========================================================================
-   4. A TABELA (#tblDinossauro)
+   5. A TABELA (#tblDinossauro)
    ========================================================================== */
 #tblDinossauro {
     -fx-background-color: transparent;
@@ -115,12 +182,12 @@
     -fx-border-width: 0 0 1px 0;
 }
 #tblDinossauro .table-row-cell:odd {
-    -fx-background-color: #141a17; /* Alternância quase imperceptível, muito elegante */
+    -fx-background-color: #141a17; /* Alternância cirúrgica e sutil */
 }
 
 /* Estado de Seleção da Linha */
 #tblDinossauro .table-row-cell:selected {
-    -fx-background-color: #1e3a2f; /* Fundo verde escuro cirúrgico */
+    -fx-background-color: #1e3a2f; /* Fundo verde escuro simulando arquivo antigo */
     -fx-text-background-color: #10b981; /* Texto acende em verde esmeralda */
 }
 #tblDinossauro .table-row-cell:selected .label {
@@ -136,18 +203,18 @@
 
 
 /* ==========================================================================
-   5. CUSTOMIZAÇÃO EXCLUSIVA DE COLUNAS (Alinhamento de Dados)
+   6. CUSTOMIZAÇÃO EXCLUSIVA DE COLUNAS (Alinhamento de Dados)
    ========================================================================== */
 
-/* Colunas de ID e Datas/Anos: Alinhamento Centralizado para organização visual */
+/* Colunas de ID e Datas/Anos: Alinhamento Centralizado */
 #colId,
 #colMyaInicio,
 #colMyaFim,
 #colAnoDescoberta {
     -fx-alignment: CENTER;
 }
-//
-/* Colunas textuais longas: Alinhamento à esquerda com leve margem (padrão JavaFX) */
+
+/* Colunas textuais longas: Alinhamento à esquerda com recuo adaptado */
 #colEspecie,
 #colSignificadoNome,
 #colOrdem,
@@ -157,26 +224,4 @@
 #colTipo,
 #colLocomocao {
     -fx-alignment: CENTER-LEFT;
-}
-
-/* (Mantenha o conteúdo anterior do seu style.css e certifique-se de ter as definições abaixo) */
-
-/* Estilo para dar Opacidade Elegante aos botões quando desabilitados pelo sistema (UX Contextual) */
-.button:disabled {
-    -fx-opacity: 0.35;
-    -fx-cursor: inherit;
-}
-
-/* Customização dos textos internos de dicas (Prompt Text Color) */
-.text-field {
-    -fx-prompt-text-fill: #4b5563; /* Cinza escuro discreto */
-}
-
-/* Modificadores extras de mensagem via código */
-.msg-sucesso {
-    -fx-text-fill: #10b981;
-}
-
-.msg-erro {
-    -fx-text-fill: #ef4444;
 }

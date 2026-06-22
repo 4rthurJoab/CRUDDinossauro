@@ -1,6 +1,8 @@
 package com.template;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,10 +16,6 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
-    // ==========================================================================
-    // MAPEAMENTO DOS COMPONENTES DO SCENE BUILDER (@FXML)
-    // ==========================================================================
-
     // Campos de Entrada de Texto
     @FXML private TextField txtEspecie;
     @FXML private TextField txtSignificadoNome;
@@ -26,10 +24,15 @@ public class MainController implements Initializable {
     @FXML private TextField txtMyaInicio;
     @FXML private TextField txtMyaFim;
     @FXML private TextField txtHabitat;
-    @FXML private TextField txtDieta;
     @FXML private TextField txtTipo;
-    @FXML private TextField txtLocomocao;
     @FXML private TextField txtAnoDescoberta;
+
+    // UX: Substituição de TextFields por ComboBoxes
+    @FXML private ComboBox<String> cbDieta;
+    @FXML private ComboBox<String> cbLocomocao;
+
+    // UX: Campo de Pesquisa em Tempo Real
+    @FXML private TextField txtPesquisa;
 
     // Botões de Ação
     @FXML private Button btnSalvar;
@@ -37,7 +40,7 @@ public class MainController implements Initializable {
     @FXML private Button btnExcluir;
     @FXML private Button btnLimpar;
 
-    // Labels de UI/UX adicionados
+    // Labels de UI/UX
     @FXML private Label lblMensagem;
     @FXML private Label lblContador;
 
@@ -56,15 +59,13 @@ public class MainController implements Initializable {
     @FXML private TableColumn<DinossauroDTO, String> colLocomocao;
     @FXML private TableColumn<DinossauroDTO, Integer> colAnoDescoberta;
 
-    // Variável de controle interna para armazenar o ID do registro selecionado
     private int idSelecionado = 0;
 
-    // ==========================================================================
-    // MÉTODO DE INICIALIZAÇÃO
-    // ==========================================================================
+    // Lista observável encapsulada para permitir filtros dinâmicos
+    private FilteredList<DinossauroDTO> dadosFiltrados;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Interliga cada TableColumn com os atributos correspondentes do DinossauroDTO
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colEspecie.setCellValueFactory(new PropertyValueFactory<>("especie"));
         colSignificadoNome.setCellValueFactory(new PropertyValueFactory<>("significadoNome"));
@@ -78,41 +79,47 @@ public class MainController implements Initializable {
         colLocomocao.setCellValueFactory(new PropertyValueFactory<>("locomocao"));
         colAnoDescoberta.setCellValueFactory(new PropertyValueFactory<>("anoDescoberta"));
 
-        // UX: Bloqueia a digitação de letras em campos numéricos
+        // UX 1: Alimentando as ComboBoxes com dados paleontológicos padronizados
+        cbDieta.setItems(FXCollections.observableArrayList("Carnívoro", "Herbívoro", "Onívoro", "Piscívoro"));
+        cbLocomocao.setItems(FXCollections.observableArrayList("Bípede", "Quadrúpede", "Semibípede"));
+
         configurarValidacaoNumerica();
-
-        // UX: Configura o estado inicial dos botões
         alternarEstadoBotoes(false);
-
-        // Carrega os dados iniciais do banco de dados para a tabela e atualiza o contador
         carregarDinossauros();
     }
 
-    // ==========================================================================
-    // MÉTODOS DE CONTROLE E REGRAS DE NEGÓCIO
-    // ==========================================================================
-
-    /**
-     * Busca a lista atualizada de dinossauros no banco e preenche a TableView.
-     */
     @FXML
     private void carregarDinossauros() {
         DinossauroDAO dao = new DinossauroDAO();
         ArrayList<DinossauroDTO> lista = dao.listarDinossauros();
+        ObservableList<DinossauroDTO> masterData = FXCollections.observableArrayList(lista);
 
-        tblDinossauro.setItems(FXCollections.observableArrayList(lista));
+        // UX 2: Configuração do Filtro Dinâmico em tempo real
+        dadosFiltrados = new FilteredList<>(masterData, p -> true);
 
-        // UI: Atualiza o contador de dinossauros cadastrados
+        txtPesquisa.textProperty().addListener((observable, oldValue, newValue) -> {
+            dadosFiltrados.setPredicate(dino -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                return dino.getEspecie().toLowerCase().contains(lowerCaseFilter) ||
+                        dino.getHabitat().toLowerCase().contains(lowerCaseFilter);
+            });
+            lblContador.setText("Total de espécies catalogadas: " + dadosFiltrados.size());
+        });
+
+        tblDinossauro.setItems(dadosFiltrados);
         lblContador.setText("Total de espécies catalogadas: " + lista.size());
     }
 
-    /**
-     * Ação do botão "Salvar" para inserir um novo registro.
-     */
     @FXML
     void btnSalvarAction(ActionEvent event) {
         if (txtEspecie.getText().trim().isEmpty()) {
             exibirMensagem("O campo 'Espécie' é obrigatório para o cadastro!", false);
+            // UX 3: Feedback visual com borda vermelha indicando erro no campo
+            txtEspecie.setStyle("-fx-border-color: #ef4444; -fx-border-width: 1.5px; -fx-border-radius: 4px;");
+            txtEspecie.requestFocus();
             return;
         }
 
@@ -125,9 +132,6 @@ public class MainController implements Initializable {
         limparCampos();
     }
 
-    /**
-     * Ação do botão "Alterar" para atualizar os dados de um dinossauro existente.
-     */
     @FXML
     void btnAlterarAction(ActionEvent event) {
         if (idSelecionado != 0) {
@@ -143,13 +147,9 @@ public class MainController implements Initializable {
         }
     }
 
-    /**
-     * Ação do botão "Excluir" com caixa de diálogo de confirmação (UX).
-     */
     @FXML
     void btnExcluirAction(ActionEvent event) {
         if (idSelecionado != 0) {
-            // UX: Solicitar confirmação antes de excluir registros
             Alert alertaConfirmacao = new Alert(Alert.AlertType.CONFIRMATION);
             alertaConfirmacao.setTitle("Confirmar Exclusão");
             alertaConfirmacao.setHeaderText("Excluir Registro de Fóssil");
@@ -169,18 +169,12 @@ public class MainController implements Initializable {
         }
     }
 
-    /**
-     * Ação do botão "Limpar" para resetar o formulário.
-     */
     @FXML
     void btnLimparAction(ActionEvent event) {
         limparCampos();
         lblMensagem.setText("");
     }
 
-    /**
-     * Captura o evento de clique na linha da tabela e preenche os campos do formulário.
-     */
     @FXML
     void carregarCampos(MouseEvent event) {
         DinossauroDTO dino = tblDinossauro.getSelectionModel().getSelectedItem();
@@ -193,50 +187,38 @@ public class MainController implements Initializable {
             txtOrdem.setText(dino.getOrdem());
             txtEra.setText(dino.getEra());
             txtHabitat.setText(dino.getHabitat());
-            txtDieta.setText(dino.getDieta());
             txtTipo.setText(dino.getTipo());
-            txtLocomocao.setText(dino.getLocomocao());
+
+            // Tratamento para ComboBoxes mapeadas
+            cbDieta.setValue(dino.getDieta());
+            cbLocomocao.setValue(dino.getLocomocao());
 
             txtMyaInicio.setText(String.valueOf(dino.getMyaInicio()));
             txtMyaFim.setText(String.valueOf(dino.getMyaFim()));
             txtAnoDescoberta.setText(String.valueOf(dino.getAnoDescoberta()));
 
-            // UX: Ativa os botões de Edição/Exclusão pois um item válido foi selecionado
+            txtEspecie.setStyle(""); // Limpa erro visual caso mude de ação
             alternarEstadoBotoes(true);
         }
     }
 
-    // ==========================================================================
-    // MÉTODOS AUXILIARES PRIVADOS (UI/UX)
-    // ==========================================================================
-
-    /**
-     * Controla quais ações estão disponíveis dependendo do contexto da aplicação.
-     */
     private void toggleBotaoEstado(boolean itemSelecionado) {
-        // Se houver item selecionado, desativa o "Salvar" e ativa "Alterar"/"Excluir"
         btnSalvar.setDisable(itemSelecionado);
         btnAlterar.setDisable(!itemSelecionado);
         btnExcluir.setDisable(!itemSelecionado);
     }
 
-    // Alias para manter legibilidade com a assinatura antiga do esqueleto
     private void alternarEstadoBotoes(boolean itemSelecionado) {
         toggleBotaoEstado(itemSelecionado);
     }
 
-    /**
-     * UX: Impede que o usuário digite texto onde apenas números inteiros ou decimais são válidos.
-     */
     private void configurarValidacaoNumerica() {
-        // Apenas dígitos numéricos positivos para o ano
         txtAnoDescoberta.textProperty().addListener((obs, antigo, novo) -> {
             if (!novo.matches("\\d*")) {
                 txtAnoDescoberta.setText(novo.replaceAll("[^\\d]", ""));
             }
         });
 
-        // Valores decimais estruturados para os campos de Milhões de Anos atrás (mya)
         txtMyaInicio.textProperty().addListener((obs, antigo, novo) -> {
             if (!novo.matches("\\d*(\\.\\d*)?")) {
                 txtMyaInicio.setText(antigo);
@@ -250,21 +232,15 @@ public class MainController implements Initializable {
         });
     }
 
-    /**
-     * UI: Exibe mensagens personalizadas em cores dependendo da resposta da operação.
-     */
     private void exibirMensagem(String texto, boolean ehSucesso) {
         lblMensagem.setText(texto);
         if (ehSucesso) {
-            lblMensagem.setStyle("-fx-text-fill: #10b981; -fx-font-weight: bold;"); // Emerald Green
+            lblMensagem.setStyle("-fx-text-fill: #16a34a; -fx-font-weight: bold;");
         } else {
-            lblMensagem.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;"); // Crimson Red
+            lblMensagem.setStyle("-fx-text-fill: #dc2626; -fx-font-weight: bold;");
         }
     }
 
-    /**
-     * Captura os textos digitados na tela e monta um objeto DinossauroDTO pronto para o banco.
-     */
     private DinossauroDTO obterDadosDoFormulario() {
         DinossauroDTO dino = new DinossauroDTO();
 
@@ -273,9 +249,11 @@ public class MainController implements Initializable {
         dino.setOrdem(txtOrdem.getText());
         dino.setEra(txtEra.getText());
         dino.setHabitat(txtHabitat.getText());
-        dino.setDieta(txtDieta.getText());
         dino.setTipo(txtTipo.getText());
-        dino.setLocomocao(txtLocomocao.getText());
+
+        // Captura o valor das ComboBoxes evitando NullPointer
+        dino.setDieta(cbDieta.getValue() != null ? cbDieta.getValue() : "");
+        dino.setLocomocao(cbLocomocao.getValue() != null ? cbLocomocao.getValue() : "");
 
         try {
             dino.setMyaInicio(Double.parseDouble(txtMyaInicio.getText()));
@@ -290,9 +268,6 @@ public class MainController implements Initializable {
         return dino;
     }
 
-    /**
-     * Reseta todos os campos de texto do formulário e limpa estados de seleção.
-     */
     private void limparCampos() {
         idSelecionado = 0;
 
@@ -303,17 +278,18 @@ public class MainController implements Initializable {
         txtMyaInicio.clear();
         txtMyaFim.clear();
         txtHabitat.clear();
-        txtDieta.clear();
         txtTipo.clear();
-        txtLocomocao.clear();
+
+        // Limpa as ComboBoxes estruturadas
+        cbDieta.setValue(null);
+        cbLocomocao.setValue(null);
+
         txtAnoDescoberta.clear();
+        txtPesquisa.clear();
 
+        txtEspecie.setStyle(""); // Remove o estilo customizado de erro visual
         tblDinossauro.getSelectionModel().clearSelection();
-
-        // Retorna os botões para o estado padrão seguro (Inserção habilitada)
         alternarEstadoBotoes(false);
-
-        // UX: Posiciona automaticamente o foco inicial de volta ao primeiro campo
         txtEspecie.requestFocus();
     }
 }
