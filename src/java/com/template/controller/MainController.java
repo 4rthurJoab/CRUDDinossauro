@@ -6,6 +6,7 @@ import com.template.util.AlertUtil;
 import com.template.util.DinossauroFilterUtil;
 import com.template.util.DinossauroFormHelper;
 import com.template.validator.DinossauroValidator;
+import com.template.validator.IDinossauroValidator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -52,6 +53,7 @@ public class MainController {
 
     private Integer idSelecionado = null;
     private final DinossauroService service = new DinossauroService();
+    private final IDinossauroValidator validator = new DinossauroValidator();
     private final ObservableList<DinossauroDTO> dadosTabela = FXCollections.observableArrayList();
     private FilteredList<DinossauroDTO> dadosFiltrados;
 
@@ -127,7 +129,7 @@ public class MainController {
 
     private void executarGravacao(String mensagemSucesso) {
         try {
-            DinossauroDTO dino = DinossauroValidator.validarEConstruir(
+            DinossauroDTO dino = validator.validarEConstruir(
                     idSelecionado,
                     txtEspecie.getText(),
                     txtSignificadoNome.getText(),
