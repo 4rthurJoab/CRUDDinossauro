@@ -1,212 +1,395 @@
 /* ==========================================================================
-   1. AMBIENTE GLOBAL & TELA PRINCIPAL (.root)
+   SISTEMA DE ARQUIVAMENTO PALEONTOLÓGICO - DESIGN SYSTEM DEFINITIVO (v2.0)
+   Tema: Dark Obsidian & Emerald Paleontology
+   Compatível nativamente com JavaFX 17+ e 21+
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CONFIGURAÇÕES GLOBAIS E RAIZ (.root)
+   -------------------------------------------------------------------------- */
 .root {
-    -fx-background-color: #121614; /* Grafite fosco ultra-escuro */
-    -fx-font-family: "Segoe UI", -apple-system, Roboto, sans-serif;
+    /* Paleta Cromática Base */
+    -fx-base-bg: #0f1412;
+    -fx-surface-bg: #161d19;
+    -fx-surface-card: #141b17;
+    -fx-surface-hover: #1c2621;
+    -fx-border-subtle: #24352b;
+    -fx-border-focus: #10b981;
+
+    /* Acentos Temáticos Paleontológicos */
+    -fx-accent-emerald: #10b981;
+    -fx-accent-amber: #d97706;
+    -fx-accent-cyan: #06b6d4;
+    -fx-accent-crimson: #ef4444;
+
+    /* Tipografia e Fundo */
+    -fx-font-family: "Segoe UI", "Roboto", -apple-system, sans-serif;
+    -fx-background-color: -fx-base-bg;
+    -fx-text-fill: #e2e8f0;
+
+    /* Remove halos/anéis azuis padrões do JavaFX */
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: transparent;
 }
 
-/* Textos dos campos (Labels) */
+/* --------------------------------------------------------------------------
+   2. TEXTOS, LABELS E MENSAGENS DE FEEDBACK
+   -------------------------------------------------------------------------- */
 .label {
-    -fx-text-fill: #9caaa0; /* Cinza esverdeado de baixa fadiga visual */
+    -fx-text-fill: #8fa196;
     -fx-font-size: 11pt;
     -fx-font-weight: 600;
 }
 
-/* Modificadores extras de mensagem via código */
+/* Título principal do cabeçalho */
+.titulo-principal {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+}
+
+/* Indicador de campo obrigatório (* asterisco) */
+.label-required {
+    -fx-text-fill: #f59e0b;
+    -fx-font-weight: bold;
+}
+
+/* Feedback Contextual */
 .msg-sucesso {
-    -fx-text-fill: #10b981;
+    -fx-text-fill: #34d399;
+    -fx-font-weight: bold;
 }
 
 .msg-erro {
-    -fx-text-fill: #ef4444;
+    -fx-text-fill: #f87171;
+    -fx-font-weight: bold;
 }
 
-/* ==========================================================================
-   2. CAMPOS DE ENTRADA (TextFields Profissionais)
-   ========================================================================== */
+#lblContador {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 10.5pt;
+    -fx-font-style: italic;
+    -fx-font-weight: 500;
+}
+
+#lblMensagem {
+    -fx-font-size: 11pt;
+    -fx-font-weight: bold;
+}
+
+/* --------------------------------------------------------------------------
+   3. CAMPOS DE ENTRADA (TextFields)
+   -------------------------------------------------------------------------- */
 .text-field {
-    -fx-background-color: #1a201c;
-    -fx-text-fill: #ffffff;
-    -fx-background-radius: 4px;
-    -fx-border-color: #2a352f;
-    -fx-border-radius: 4px;
-    -fx-border-width: 1px;
-    -fx-padding: 6px 12px;
+    -fx-background-color: #17201b;
+    -fx-background-radius: 6px;
+    -fx-border-color: #26362e;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1.5px;
+    -fx-padding: 7px 12px;
+    -fx-text-fill: #f3f4f6;
     -fx-font-size: 11pt;
-    -fx-prompt-text-fill: #4b5563; /* Cinza escuro discreto para Placeholders */
+    -fx-prompt-text-fill: #4b5d52;
 }
 
-/* Mudança sutil e elegante ao selecionar o campo */
+.text-field:hover {
+    -fx-background-color: #1a251f;
+    -fx-border-color: #374e42;
+}
+
 .text-field:focused {
-    -fx-background-color: #1d2621;
-    -fx-border-color: #00b4d8; /* Azul cyan tecnológico para destacar o foco */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 180, 216, 0.2), 6, 0, 0, 0);
+    -fx-background-color: #1b2821;
+    -fx-border-color: #10b981;
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.28), 8, 0.2, 0, 0);
 }
 
-/* ==========================================================================
-   3. CAIXAS DE SELEÇÃO (ComboBoxes Integradas ao Tema Dark)
-   ========================================================================== */
+/* Barra de Pesquisa Rápida (Formato Pílula com Cyan Glow) */
+#txtPesquisa {
+    -fx-background-color: #141c18;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #2a3d33;
+    -fx-border-width: 1.5px;
+    -fx-padding: 6px 16px;
+    -fx-prompt-text-fill: #5a6e62;
+}
+
+#txtPesquisa:hover {
+    -fx-border-color: #3b5749;
+    -fx-background-color: #18231e;
+}
+
+#txtPesquisa:focused {
+    -fx-border-color: #06b6d4;
+    -fx-background-color: #192723;
+    -fx-effect: dropshadow(gaussian, rgba(6, 182, 212, 0.35), 10, 0.2, 0, 0);
+}
+
+/* --------------------------------------------------------------------------
+   4. CAIXAS DE SELEÇÃO (ComboBoxes)
+   -------------------------------------------------------------------------- */
 .combo-box {
-    -fx-background-color: #1a201c;
-    -fx-background-radius: 4px;
-    -fx-border-color: #2a352f;
-    -fx-border-radius: 4px;
-    -fx-border-width: 1px;
+    -fx-background-color: #17201b;
+    -fx-background-radius: 6px;
+    -fx-border-color: #26362e;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1.5px;
     -fx-font-size: 11pt;
+    -fx-padding: 1px 4px;
+}
+
+.combo-box:hover {
+    -fx-background-color: #1a251f;
+    -fx-border-color: #374e42;
 }
 
 .combo-box:focused {
-    -fx-background-color: #1d2621;
-    -fx-border-color: #00b4d8;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 180, 216, 0.2), 6, 0, 0, 0);
+    -fx-background-color: #1b2821;
+    -fx-border-color: #10b981;
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.28), 8, 0.2, 0, 0);
 }
 
-/* Texto dentro do ComboBox fechado */
 .combo-box .list-cell {
-    -fx-text-fill: #ffffff;
-    -fx-padding: 4px 6px;
+    -fx-text-fill: #f3f4f6;
+    -fx-padding: 5px 8px;
+    -fx-background-color: transparent;
 }
 
-/* Customização do menu suspenso (Popup da lista) */
+.combo-box .list-cell:empty {
+    -fx-text-fill: #4b5d52;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 8px 0 2px;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #71877b;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+}
+
+.combo-box:hover .arrow,
+.combo-box:focused .arrow {
+    -fx-background-color: #10b981;
+}
+
 .combo-box-popup .list-view {
-    -fx-background-color: #1a201c;
-    -fx-border-color: #2a352f;
-    -fx-border-width: 1px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 4);
+    -fx-background-color: #161e1a;
+    -fx-border-color: #2d3f35;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.65), 14, 0.3, 0, 6);
 }
 
-/* Itens internos da lista do ComboBox */
 .combo-box-popup .list-view .list-cell {
-    -fx-background-color: #1a201c;
-    -fx-text-fill: #e2e8f0;
+    -fx-background-color: transparent;
+    -fx-text-fill: #cbd5e1;
+    -fx-background-radius: 4px;
     -fx-padding: 8px 12px;
+    -fx-font-size: 10.5pt;
 }
 
-/* Hover nos itens do ComboBox */
 .combo-box-popup .list-view .list-cell:hover {
-    -fx-background-color: #2a352f;
+    -fx-background-color: #202d26;
     -fx-text-fill: #ffffff;
 }
 
-/* Item selecionado dentro do menu do ComboBox */
 .combo-box-popup .list-view .list-cell:filled:selected {
-    -fx-background-color: #1e3a2f;
-    -fx-text-fill: #10b981;
+    -fx-background-color: #183d2f;
+    -fx-text-fill: #34d399;
+    -fx-font-weight: bold;
 }
 
-/* ==========================================================================
-   4. BOTÕES DO CRUD (Estilo Premium Flat)
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   5. BOTÕES DE AÇÃO E ÍCONES SVG VETORIAIS
+   -------------------------------------------------------------------------- */
 .button {
     -fx-font-size: 11pt;
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
-    -fx-background-radius: 4px;
-    -fx-padding: 8px 22px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-padding: 9px 20px;
     -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 0, 2);
 }
 
-/* Estilo para dar Opacidade Elegante aos botões quando desabilitados (UX Contextual) */
 .button:disabled {
     -fx-opacity: 0.35;
-    -fx-cursor: inherit;
+    -fx-cursor: default;
+    -fx-effect: none;
 }
 
-/* #btnSalvar - Verde Esmeralda */
+/* Ícones vetoriais SVG (caso use <graphic> no FXML) */
+.button .graphic-icon {
+    -fx-pref-width: 13px;
+    -fx-pref-height: 13px;
+    -fx-background-color: #ffffff;
+}
+
+/* #btnSalvar - Esmeralda Vibrante */
 #btnSalvar {
-    -fx-background-color: #10b981;
+    -fx-background-color: linear-gradient(to bottom, #10b981, #059669);
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.35), 8, 0, 0, 2);
 }
-#btnSalvar:hover { -fx-background-color: #059669; }
-#btnSalvar:pressed { -fx-background-color: #065f46; }
+#btnSalvar:hover {
+    -fx-background-color: linear-gradient(to bottom, #34d399, #059669);
+    -fx-effect: dropshadow(gaussian, rgba(52, 211, 153, 0.45), 10, 0.1, 0, 3);
+}
+#btnSalvar:pressed {
+    -fx-background-color: #047857;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0, 0, 1);
+}
+#btnSalvar .graphic-icon {
+    -fx-shape: "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8zM7 3v5h8V3z";
+}
 
-/* #btnAlterar - Azul Corporativo */
+/* #btnAlterar - Azul Safira */
 #btnAlterar {
-    -fx-background-color: #3b82f6;
+    -fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb);
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.35), 8, 0, 0, 2);
 }
-#btnAlterar:hover { -fx-background-color: #2563eb; }
-#btnAlterar:pressed { -fx-background-color: #1d4ed8; }
+#btnAlterar:hover {
+    -fx-background-color: linear-gradient(to bottom, #60a5fa, #2563eb);
+    -fx-effect: dropshadow(gaussian, rgba(96, 165, 250, 0.45), 10, 0.1, 0, 3);
+}
+#btnAlterar:pressed {
+    -fx-background-color: #1d4ed8;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0, 0, 1);
+}
+#btnAlterar .graphic-icon {
+    -fx-shape: "M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z";
+}
 
-/* #btnExcluir - Vermelho Crimson */
+/* #btnExcluir - Crimson Carmim */
 #btnExcluir {
-    -fx-background-color: #ef4444;
+    -fx-background-color: linear-gradient(to bottom, #ef4444, #dc2626);
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.35), 8, 0, 0, 2);
 }
-#btnExcluir:hover { -fx-background-color: #dc2626; }
-#btnExcluir:pressed { -fx-background-color: #991b1b; }
+#btnExcluir:hover {
+    -fx-background-color: linear-gradient(to bottom, #f87171, #dc2626);
+    -fx-effect: dropshadow(gaussian, rgba(248, 113, 113, 0.45), 10, 0.1, 0, 3);
+}
+#btnExcluir:pressed {
+    -fx-background-color: #b91c1c;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0, 0, 1);
+}
+#btnExcluir .graphic-icon {
+    -fx-shape: "M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2";
+}
 
-/* #btnLimpar - Grafite Neutro */
+/* #btnLimpar - Grafite Ardósia */
 #btnLimpar {
-    -fx-background-color: #374151;
-    -fx-text-fill: #d1d5db;
+    -fx-background-color: linear-gradient(to bottom, #374151, #1f2937);
+    -fx-text-fill: #e5e7eb;
+    -fx-border-color: #4b5563;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 6, 0, 0, 2);
 }
-#btnLimpar:hover { -fx-background-color: #4b5563; }
-#btnLimpar:pressed { -fx-background-color: #1f2937; }
+#btnLimpar:hover {
+    -fx-background-color: linear-gradient(to bottom, #4b5563, #374151);
+    -fx-border-color: #6b7280;
+    -fx-text-fill: #ffffff;
+}
+#btnLimpar:pressed {
+    -fx-background-color: #111827;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0, 0, 1);
+}
+#btnLimpar .graphic-icon {
+    -fx-shape: "M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83";
+}
 
-
-/* ==========================================================================
-   5. A TABELA (#tblDinossauro)
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   6. TABELA (#tblDinossauro - Tabela com Indicador Lateral Ativo)
+   -------------------------------------------------------------------------- */
 #tblDinossauro {
     -fx-background-color: transparent;
-    -fx-border-color: #222b26;
+    -fx-border-color: #24352b;
     -fx-border-width: 1px;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 12, 0, 0, 4);
 }
 
-/* Cabeçalho superior da tabela */
+#tblDinossauro .corner {
+    -fx-background-color: #16201b;
+}
+
 #tblDinossauro .column-header-background {
-    -fx-background-color: #1a201c;
-    -fx-padding: 0 0 1px 0;
+    -fx-background-color: #141c18;
+    -fx-border-color: #24352b;
+    -fx-border-width: 0 0 1.5px 0;
+    -fx-background-radius: 8px 8px 0 0;
 }
 
 #tblDinossauro .column-header {
     -fx-background-color: transparent;
-    -fx-size: 38px; /* Altura ideal de leitura */
-    -fx-border-color: #121614;
-    -fx-border-width: 0 1px 1px 0;
+    -fx-size: 42px;
+    -fx-border-color: #1c2922;
+    -fx-border-width: 0 1px 0 0;
+    -fx-padding: 0 8px;
+}
+
+#tblDinossauro .column-header:hover {
+    -fx-background-color: #1a2720;
 }
 
 #tblDinossauro .column-header .label {
-    -fx-text-fill: #e2e8f0;
+    -fx-text-fill: #a7b8ad;
     -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
+
+#tblDinossauro .column-header .arrow {
+    -fx-background-color: #10b981;
+}
+
+/* Linhas com Efeito Zebrado Discreto */
+#tblDinossauro .table-row-cell {
+    -fx-background-color: #161e1a;
+    -fx-cell-size: 35px;
+    -fx-border-color: #121815;
+    -fx-border-width: 0 0 1px 0;
+    -fx-text-background-color: #d1d5db;
+}
+
+#tblDinossauro .table-row-cell:odd {
+    -fx-background-color: #131a16;
+}
+
+#tblDinossauro .table-row-cell:hover {
+    -fx-background-color: #1b2b22;
+}
+
+/* Linha Selecionada com Borda Lateral Verde (Accent Bar) */
+#tblDinossauro .table-row-cell:selected {
+    -fx-background-color: linear-gradient(to right, rgba(16, 185, 129, 0.22), #14221b);
+    -fx-border-color: transparent transparent #121815 #10b981;
+    -fx-border-width: 0 0 1px 3.5px;
+}
+
+#tblDinossauro .table-row-cell:selected .label {
+    -fx-text-fill: #34d399;
     -fx-font-weight: bold;
 }
 
-/* Linhas da Tabela (Zebradas com tons suaves) */
-#tblDinossauro .table-row-cell {
-    -fx-background-color: #171e1a;
-    -fx-text-background-color: #e2e8f0;
-    -fx-cell-size: 32px;
-    -fx-border-color: #121614;
-    -fx-border-width: 0 0 1px 0;
-}
-#tblDinossauro .table-row-cell:odd {
-    -fx-background-color: #141a17; /* Alternância cirúrgica e sutil */
+#tblDinossauro .filler {
+    -fx-background-color: #131a16;
 }
 
-/* Estado de Seleção da Linha */
-#tblDinossauro .table-row-cell:selected {
-    -fx-background-color: #1e3a2f; /* Fundo verde escuro simulando arquivo antigo */
-    -fx-text-background-color: #10b981; /* Texto acende em verde esmeralda */
-}
-#tblDinossauro .table-row-cell:selected .label {
-    -fx-text-fill: #10b981;
-}
-
-/* Placeholder (Texto quando a tabela está vazia) */
 #tblDinossauro .placeholder .label {
-    -fx-text-fill: #4b5563;
+    -fx-text-fill: #4b5d52;
     -fx-font-style: italic;
     -fx-font-size: 11pt;
 }
 
-
-/* ==========================================================================
-   6. CUSTOMIZAÇÃO EXCLUSIVA DE COLUNAS (Alinhamento de Dados)
-   ========================================================================== */
-
-/* Colunas de ID e Datas/Anos: Alinhamento Centralizado */
+/* Alinhamento Cirúrgico das Colunas */
 #colId,
 #colMyaInicio,
 #colMyaFim,
@@ -214,7 +397,6 @@
     -fx-alignment: CENTER;
 }
 
-/* Colunas textuais longas: Alinhamento à esquerda com recuo adaptado */
 #colEspecie,
 #colSignificadoNome,
 #colOrdem,
@@ -224,4 +406,126 @@
 #colTipo,
 #colLocomocao {
     -fx-alignment: CENTER-LEFT;
+}
+
+/* --------------------------------------------------------------------------
+   7. BARRAS DE ROLAGEM MINIMALISTAS (ScrollBars Dark)
+   -------------------------------------------------------------------------- */
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px;
+    -fx-pref-height: 10px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #101613;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #27382f;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #3b5246;
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #10b981;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/* --------------------------------------------------------------------------
+   8. CAIXAS DE DIÁLOGO E ALERTS (AlertUtil integrado)
+   -------------------------------------------------------------------------- */
+.dialog-pane {
+    -fx-background-color: #161d19;
+    -fx-border-color: #24352b;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 16, 0.3, 0, 8);
+}
+
+.dialog-pane .content.label {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 11.5pt;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #131a16;
+}
+
+.dialog-pane .button-bar .button {
+    -fx-font-size: 10.5pt;
+    -fx-padding: 6px 18px;
+    -fx-background-radius: 5px;
+}
+
+/* --------------------------------------------------------------------------
+   9. TOOLTIPS MODERNOS
+   -------------------------------------------------------------------------- */
+.tooltip {
+    -fx-background-color: #1a241f;
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 9.5pt;
+    -fx-padding: 6px 10px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #2e4337;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 8, 0, 0, 3);
+}
+
+/* --------------------------------------------------------------------------
+   10. CARDS E BADGES OPCIONAIS
+   -------------------------------------------------------------------------- */
+.card-container {
+    -fx-background-color: #141b17;
+    -fx-background-radius: 8px;
+    -fx-border-color: #212d26;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0, 0, 2);
+}
+
+.badge-carnivoro {
+    -fx-background-color: rgba(239, 68, 68, 0.18);
+    -fx-text-fill: #f87171;
+    -fx-background-radius: 12px;
+    -fx-padding: 2px 8px;
+}
+
+.badge-herbivoro {
+    -fx-background-color: rgba(16, 185, 129, 0.18);
+    -fx-text-fill: #34d399;
+    -fx-background-radius: 12px;
+    -fx-padding: 2px 8px;
+}
+
+.badge-onivoro {
+    -fx-background-color: rgba(245, 158, 11, 0.18);
+    -fx-text-fill: #fbbf24;
+    -fx-background-radius: 12px;
+    -fx-padding: 2px 8px;
+}
+
+.badge-piscivoro {
+    -fx-background-color: rgba(6, 182, 212, 0.18);
+    -fx-text-fill: #22d3ee;
+    -fx-background-radius: 12px;
+    -fx-padding: 2px 8px;
 }
