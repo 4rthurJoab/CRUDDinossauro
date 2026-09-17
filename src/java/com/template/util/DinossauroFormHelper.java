@@ -1,12 +1,24 @@
 package com.template.util;
 
 import com.template.model.DinossauroDTO;
+import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 public class DinossauroFormHelper {
 
     private DinossauroFormHelper() {}
+
+    public static void configurarComboBoxes(ComboBox<String> cbDieta, ComboBox<String> cbLocomocao) {
+        if (cbDieta != null) {
+            cbDieta.setItems(FXCollections.observableArrayList("Carnívoro", "Herbívoro", "Onívoro", "Piscívoro"));
+        }
+        if (cbLocomocao != null) {
+            cbLocomocao.setItems(FXCollections.observableArrayList("Bípede", "Quadrúpede", "Semibípede", "Facultativo"));
+        }
+    }
 
     public static void carregarNoFormulario(
             DinossauroDTO dino,
@@ -43,6 +55,16 @@ public class DinossauroFormHelper {
         }
         for (ComboBox<?> cb : comboBoxes) {
             if (cb != null) cb.setValue(null);
+        }
+    }
+
+    public static void limparFormulario(TextField[] textFields, ComboBox<?>[] comboBoxes, Label lblMensagem, TableView<?> tabela) {
+        limparCampos(textFields, comboBoxes);
+        if (lblMensagem != null) {
+            lblMensagem.setText("");
+        }
+        if (tabela != null) {
+            tabela.getSelectionModel().clearSelection();
         }
     }
 }

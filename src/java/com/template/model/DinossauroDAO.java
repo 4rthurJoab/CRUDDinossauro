@@ -8,7 +8,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DinossauroDAO {
+public class DinossauroDAO implements IDinossauroDAO {
 
     public void cadastrar(DinossauroDTO dino) {
         String sql = "INSERT INTO dinossauro (especie, significado_nome, ordem, era, mya_inicio, mya_fim, habitat, dieta, tipo, locomocao, ano_descoberta) "

@@ -2,20 +2,22 @@ package com.template.service;
 
 import com.template.model.DinossauroDAO;
 import com.template.model.DinossauroDTO;
+import com.template.model.IDinossauroDAO;
 import java.util.List;
 
-public class DinossauroService {
+public class DinossauroService implements IDinossauroService {
 
-    private final DinossauroDAO dao;
+    private final IDinossauroDAO dao;
 
     public DinossauroService() {
-        this.dao = new DinossauroDAO();
+        this(new DinossauroDAO());
     }
 
-    public DinossauroService(DinossauroDAO dao) {
+    public DinossauroService(IDinossauroDAO dao) {
         this.dao = dao;
     }
 
+    @Override
     public void salvar(DinossauroDTO dino) {
         if (dino.getId() == null || dino.getId() == 0) {
             dao.cadastrar(dino);
@@ -24,6 +26,7 @@ public class DinossauroService {
         }
     }
 
+    @Override
     public void excluir(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("ID inválido para exclusão.");
@@ -31,6 +34,7 @@ public class DinossauroService {
         dao.excluir(id);
     }
 
+    @Override
     public List<DinossauroDTO> listarTodos() {
         return dao.listar();
     }

@@ -2,6 +2,7 @@ package com.template.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import java.util.Optional;
 
 public class AlertUtil {
@@ -22,5 +23,12 @@ public class AlertUtil {
 
         Optional<ButtonType> resultado = alert.showAndWait();
         return resultado.isPresent() && resultado.get() == ButtonType.OK;
+    }
+
+    public static void definirMensagemFeedback(Label lblMensagem, String msg, String corHex) {
+        if (lblMensagem != null) {
+            lblMensagem.setText(msg);
+            lblMensagem.setStyle("-fx-text-fill: " + corHex + "; -fx-font-weight: bold;");
+        }
     }
 }
