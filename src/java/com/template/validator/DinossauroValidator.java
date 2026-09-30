@@ -1,11 +1,20 @@
 package com.template.validator;
 
 import com.template.model.DinossauroDTO;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DinossauroValidator implements IDinossauroValidator {
+
+    private final MyaValidador myaValidador;
+    private final AnoDescobertaValidador anoValidador;
+
+    public DinossauroValidator() {
+        this(new MyaValidador(), new AnoDescobertaValidador());
+    }
+
+    public DinossauroValidator(MyaValidador myaValidador, AnoDescobertaValidador anoValidador) {
+        this.myaValidador = myaValidador;
+        this.anoValidador = anoValidador;
+    }
 
     @Override
     public DinossauroDTO validarEConstruir(
@@ -22,98 +31,72 @@ public class DinossauroValidator implements IDinossauroValidator {
             String locomocao,
             String anoDescoberta) {
 
-        // 1. Validação de campos obrigatórios (SRP / OCP)
-        List<Validador<String>> validadores = new ArrayList<>();
-        validadores.add(new CampoObrigatorioValidador("Espécie", especie));
-        validadores.add(new CampoObrigatorioValidador("Ordem", ordem));
-        validadores.add(new CampoObrigatorioValidador("Era", era));
-        validadores.add(new CampoObrigatorioValidador("Dieta", dieta));
-        validadores.add(new CampoObrigatorioValidador("Locomoção", locomocao));
+        validarObrigatorio("Espécie", especie);
+        validarObrigatorio("Ordem", ordem);
+        validarObrigatorio("Era", era);
+        validarObrigatorio("Dieta", dieta);
+        validarObrigatorio("Locomoção", locomocao);
 
-        for (Validador<String> validador : validadores) {
-            if (!validador.validar(validador.getValor())) {
-                throw new IllegalArgumentException(validador.getMensagemErro());
-            }
-        }
+        Double inicio = myaValidador.converter(
+                myaInicio,
+                "MYA Inicial"
+        );
 
-        // 2. Validação e conversão de MYA
-        Double parsedMyaInicio = null;
-        Double parsedMyaFim = null;
+        Double fim = myaValidador.converter(
+                myaFim,
+                "MYA Final"
+        );
 
-        try {
-            if (myaInicio != null && !myaInicio.trim().isEmpty()) {
-                parsedMyaInicio = Double.parseDouble(myaInicio.trim().replace(",", "."));
-                if (parsedMyaInicio < 0) {
-                    throw new IllegalArgumentException("O MYA Inicial não pode ser negativo.");
-                }
-            }
-            if (myaFim != null && !myaFim.trim().isEmpty()) {
-                parsedMyaFim = Double.parseDouble(myaFim.trim().replace(",", "."));
-                if (parsedMyaFim < 0) {
-                    throw new IllegalArgumentException("O MYA Final não pode ser negativo.");
-                }
-            }
-            if (parsedMyaInicio != null && parsedMyaFim != null && parsedMyaInicio < parsedMyaFim) {
-                throw new IllegalArgumentException("O MYA Inicial deve ser maior ou igual ao MYA Final (tempo geológico decorrido).");
-            }
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Informe valores numéricos válidos para os campos de MYA.");
-        }
+        myaValidador.validarIntervalo(inicio, fim);
 
-        // 3. Validação e conversão do Ano de Descoberta
-        Integer parsedAnoDescoberta = null;
-        if (anoDescoberta != null && !anoDescoberta.trim().isEmpty()) {
-            try {
-                parsedAnoDescoberta = Integer.parseInt(anoDescoberta.trim());
-                int anoAtual = Year.now().getValue();
-                if (parsedAnoDescoberta < 1600 || parsedAnoDescoberta > anoAtual) {
-                    throw new IllegalArgumentException("O Ano de Descoberta deve estar entre 1600 e " + anoAtual + ".");
-                }
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("O Ano de Descoberta deve ser um número inteiro válido.");
-            }
-        }
+        Integer ano = anoValidador.validarEConverter(anoDescoberta);
 
-        // 4. Retorna a entidade construída
         return new DinossauroDTO(
                 id,
-                especie != null ? especie.trim() : null,
+                especie.trim(),
                 significadoNome != null ? significadoNome.trim() : null,
-                ordem != null ? ordem.trim() : null,
-                era != null ? era.trim() : null,
-                parsedMyaInicio,
-                parsedMyaFim,
+                ordem.trim(),
+                era.trim(),
+                inicio,
+                fim,
                 habitat != null ? habitat.trim() : null,
                 dieta,
                 tipo != null ? tipo.trim() : null,
                 locomocao,
-                parsedAnoDescoberta
+                ano
         );
+    }
+
+    private void validarObrigatorio(String nomeCampo, String valor) {
+        CampoObrigatorioValidador validador = new CampoObrigatorioValidador(nomeCampo, valor);
+        if (!validador.validar(valor)) {
+            throw new IllegalArgumentException(validador.getMensagemErro());
+        }
     }
 
     @Override
     public boolean validarCampoObrigatorio(String nomeCampo, String valor) {
-        return valor != null && !valor.trim().isEmpty();
+        return new CampoObrigatorioValidador(nomeCampo, valor).validar(valor);
     }
 
     @Override
     public boolean validarMya(String myaInicio, String myaFim) {
         try {
-            if (myaInicio != null && !myaInicio.trim().isEmpty()) Double.parseDouble(myaInicio.trim());
-            if (myaFim != null && !myaFim.trim().isEmpty()) Double.parseDouble(myaFim.trim());
+            Double inicio = myaValidador.converter(myaInicio, "MYA Inicial");
+            Double fim = myaValidador.converter(myaFim, "MYA Final");
+            myaValidador.validarIntervalo(inicio, fim);
             return true;
-        } catch (NumberFormatException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
 
     @Override
     public boolean validarAnoDescoberta(String anoDescoberta) {
-        if (anoDescoberta == null || anoDescoberta.trim().isEmpty()) return true;
         try {
-            int ano = Integer.parseInt(anoDescoberta.trim());
-            return ano >= 1600 && ano <= Year.now().getValue();
-        } catch (NumberFormatException e) {
+            anoValidador.validarEConverter(anoDescoberta);
+            return true;
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
