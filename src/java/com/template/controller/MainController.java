@@ -8,6 +8,7 @@ import com.template.util.DinossauroFormHelper;
 import com.template.util.DinossauroTableHelper;
 import com.template.validator.DinossauroValidator;
 import com.template.validator.IDinossauroValidator;
+import com.template.validator.MyaValidador;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -151,16 +152,40 @@ public class MainController {
         txtPesquisa.setVisible(visivel);
         txtPesquisa.setManaged(visivel);
     }
+
     @FXML
     private void executarGravacao(String mensagemSucesso) {
         try {
-            DinossauroDTO dino = validator.validarEConstruir(
+            // Conversões numéricas dos valores informados nos campos de texto
+            MyaValidador myaHelper = new MyaValidador();
+            Double parsedMyaInicio = myaHelper.converter(txtMyaInicio.getText(), "O MYA Inicial");
+            Double parsedMyaFim = myaHelper.converter(txtMyaFim.getText(), "O MYA Final");
+
+            Integer parsedAnoDescoberta = null;
+            if (txtAnoDescoberta.getText() != null && !txtAnoDescoberta.getText().trim().isEmpty()) {
+                parsedAnoDescoberta = Integer.parseInt(txtAnoDescoberta.getText().trim());
+            }
+
+            // Construção do objeto DTO
+            DinossauroDTO dino = new DinossauroDTO(
                     idSelecionado,
-                    txtEspecie.getText(), txtSignificadoNome.getText(), txtOrdem.getText(), txtEra.getText(),
-                    txtMyaInicio.getText(), txtMyaFim.getText(), txtHabitat.getText(),
-                    cbDieta.getValue(), txtTipo.getText(), cbLocomocao.getValue(), txtAnoDescoberta.getText()
+                    txtEspecie.getText() != null ? txtEspecie.getText().trim() : null,
+                    txtSignificadoNome.getText() != null ? txtSignificadoNome.getText().trim() : null,
+                    txtOrdem.getText() != null ? txtOrdem.getText().trim() : null,
+                    txtEra.getText() != null ? txtEra.getText().trim() : null,
+                    parsedMyaInicio,
+                    parsedMyaFim,
+                    txtHabitat.getText() != null ? txtHabitat.getText().trim() : null,
+                    cbDieta.getValue(),
+                    txtTipo.getText() != null ? txtTipo.getText().trim() : null,
+                    cbLocomocao.getValue(),
+                    parsedAnoDescoberta
             );
 
+            // Validação utilizando a nova interface adaptada (validarDinossauro)
+            validator.validarDinossauro(dino);
+
+            // Salva o registro e atualiza a interface
             service.salvar(dino);
             idSelecionado = null;
             DinossauroFormHelper.limparFormulario(obterCamposTexto(), obterCombos(), lblMensagem, tblDinossauro);
@@ -172,10 +197,12 @@ public class MainController {
             AlertUtil.exibirMensagem(Alert.AlertType.ERROR, "Erro", "Falha na operação: " + e.getMessage());
         }
     }
+
     @FXML
     private TextField[] obterCamposTexto() {
         return new TextField[]{ txtEspecie, txtSignificadoNome, txtOrdem, txtEra, txtMyaInicio, txtMyaFim, txtHabitat, txtTipo, txtAnoDescoberta };
     }
+
     @FXML
     private ComboBox<?>[] obterCombos() {
         return new ComboBox<?>[]{ cbDieta, cbLocomocao };
